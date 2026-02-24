@@ -1,25 +1,1203 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Float Fake</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContactTech — Soluciones para Contact Centers</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f4f0;
+    --green: #00e676;
+    --green-dark: #00b248;
+    --gray: #1a1a1a;
+    --gray-mid: #2e2e2e;
+    --gray-light: #888;
+    --accent: #00e676;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    background: rgba(10,10,10,0.7);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    color: var(--white);
+  }
+
+  .logo span { color: var(--green); }
+
+  .nav-cta {
+    background: var(--green);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 10px 22px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--white); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,230,118,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--green);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(52px, 7vw, 100px);
+    line-height: 0.95;
+    letter-spacing: -3px;
+    max-width: 800px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--green);
+    position: relative;
+  }
+
+  .hero-sub {
+    margin-top: 40px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--gray-light);
+    max-width: 480px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 52px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--white); transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 16px 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+
+  .hero-stat {
+    position: absolute;
+    bottom: 80px; right: 60px;
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .hero-stat .number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 64px;
+    color: var(--green);
+    line-height: 1;
+  }
+
+  .hero-stat .label {
+    font-size: 13px;
+    color: var(--gray-light);
+    letter-spacing: 1px;
+  }
+
+  /* PROBLEM */
+  .section {
+    padding: 120px 60px;
+  }
+
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  .problem {
+    background: var(--gray);
+    border-top: 1px solid var(--gray-mid);
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .problem h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.1;
+    letter-spacing: -2px;
+  }
+
+  .problem h2 span { color: var(--green); }
+
+  .problem-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .problem-card {
+    background: var(--black);
+    border: 1px solid var(--gray-mid);
+    padding: 28px 32px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: border-color 0.3s;
+  }
+
+  .problem-card:hover { border-color: var(--green); }
+
+  .problem-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .problem-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .problem-card p {
+    font-size: 14px;
+    color: var(--gray-light);
+    line-height: 1.6;
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    border-top: 1px solid var(--gray-mid);
+  }
+
+  .how h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -2px;
+    margin-bottom: 80px;
+    max-width: 500px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--gray-mid);
+  }
+
+  .step {
+    padding: 52px 40px;
+    border-right: 1px solid var(--gray-mid);
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .step:last-child { border-right: none; }
+  .step:hover { background: var(--gray); }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 72px;
+    color: rgba(0,230,118,0.12);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .step h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .step p {
+    font-size: 14px;
+    color: var(--gray-light);
+    line-height: 1.7;
+  }
+
+  /* PRICING */
+  .pricing {
+    background: var(--gray);
+    border-top: 1px solid var(--gray-mid);
+  }
+
+  .pricing h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .pricing-sub {
+    color: var(--gray-light);
+    font-size: 16px;
+    margin-bottom: 80px;
+  }
+
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--gray-mid);
+  }
+
+  .plan {
+    padding: 52px 40px;
+    border-right: 1px solid var(--gray-mid);
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .plan:last-child { border-right: none; }
+
+  .plan.featured {
+    background: var(--green);
+    color: var(--black);
+  }
+
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    color: var(--gray-light);
+  }
+
+  .plan.featured .plan-name { color: rgba(0,0,0,0.6); }
+
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -2px;
+  }
+
+  .plan-period {
+    font-size: 13px;
+    color: var(--gray-light);
+    margin-bottom: 40px;
+  }
+
+  .plan.featured .plan-period { color: rgba(0,0,0,0.6); }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .plan-features li {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gray-light);
+  }
+
+  .plan.featured .plan-features li { color: rgba(0,0,0,0.8); }
+
+  .plan-features li::before {
+    content: '→';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .plan.featured .plan-features li::before { color: var(--black); }
+
+  .plan-btn {
+    width: 100%;
+    padding: 14px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    border: 1px solid var(--gray-mid);
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+  }
+
+  .plan-btn:hover { background: var(--green); border-color: var(--green); color: var(--black); }
+
+  .plan.featured .plan-btn {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
+
+  .plan.featured .plan-btn:hover { background: var(--gray); }
+
+  /* CONTACT */
+  .contact {
+    border-top: 1px solid var(--gray-mid);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: start;
+  }
+
+  .contact h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+  }
+
+  .contact-desc {
+    color: var(--gray-light);
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--gray-light);
+  }
+
+  .contact-info-item span:first-child {
+    color: var(--green);
+    font-size: 16px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-light);
+  }
+
+  input, select, textarea {
+    background: var(--gray);
+    border: 1px solid var(--gray-mid);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--green);
+  }
+
+  textarea { resize: vertical; min-height: 120px; }
+
+  select option { background: var(--gray); }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .submit-btn {
+    background: var(--green);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .submit-btn:hover { background: var(--white); transform: translateY(-2px); }
+
+  .success-msg {
+    display: none;
+    background: rgba(0,230,118,0.1);
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: 16px 20px;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--gray-mid);
+    padding: 40px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+  }
+
+  .footer-logo span { color: var(--green); }
+
+  footer p {
+    font-size: 13px;
+    color: var(--gray-light);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0.3;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .hero { padding: 120px 24px 60px; }
+    .section { padding: 80px 24px; }
+    h1 { letter-spacing: -2px; }
+    .problem-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .steps, .plans { grid-template-columns: 1fr; }
+    .step, .plan { border-right: none; border-bottom: 1px solid var(--gray-mid); }
+    .step:last-child, .plan:last-child { border-bottom: none; }
+    .hero-stat { position: static; text-align: left; margin-top: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
 </head>
 <body>
 
-<h3>Float Fake Web</h3>
+<!-- NAV -->
+<nav>
+  <div class="logo">Contact<span>Tech</span></div>
+  <a href="#contacto" class="nav-cta">Solicitar demo</a>
+</nav>
 
-<script type='text/javascript'>
-(function(){
-  var s1 = document.createElement('script'),
-      s0 = document.getElementsByTagName('script')[0];
-  s1.async = true;
-  s1.src = 'http://us.floatbot.ai/portal/chatbot/?botId=694033711beee5f68e489de5';
-  s1.charset = 'UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-tag">Soluciones para Contact Centers</div>
+  <h1>Contactá solo<br>a quien <em>vale</em><br>la pena.</h1>
+  <p class="hero-sub">Validamos en segundos qué números de tu base tienen WhatsApp activo. Sin llamadas inútiles. Sin agentes perdiendo tiempo.</p>
+  <div class="hero-actions">
+    <a href="#contacto" class="btn-primary">Quiero probarlo</a>
+    <a href="#como-funciona" class="btn-secondary">Ver cómo funciona</a>
+  </div>
+  <div class="hero-stat">
+    <div class="number">40%</div>
+    <div class="label">de bases de datos no tiene WhatsApp activo</div>
+  </div>
+</section>
 
-</body>
-</html>
+<!-- PROBLEM -->
+<section class="section problem">
+  <div class="section-label">El problema</div>
+  <div class="problem-grid">
+    <div>
+      <h2>Tu equipo pierde horas en números <span>que no existen</span>.</h2>
+    </div>
+    <div class="problem-cards">
+      <div class="problem-card">
+        <div class="problem-icon">📵</div>
+        <div>
+          <h3>Números sin WhatsApp</h3>
+          <p>Líneas fijas, números viejos o de personas que nunca instalaron la app. Tu agente intenta y nadie responde.</p>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🗂️</div>
+        <div>
+          <h3>Bases de datos desactualizadas</h3>
+          <p>Los contactos cambian de número, dan de baja SIMs o simplemente dejan de usar WhatsApp. Tu lista envejece.</p>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">💸</div>
+        <div>
+          <h3>Costo real por contacto fallido</h3>
+          <p>Cada intento fallido es tiempo de agente perdido. Multiplicado por miles de contactos, el impacto es enorme.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section how" id="como-funciona">
+  <div class="section-label">Cómo funciona</div>
+  <h2>Simple, rápido y sin fricción.</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Enviás tu lista</h3>
+      <p>Mandás un array de números vía API o cargás un archivo. Acepta cualquier formato de número argentino o internacional.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Validamos en segundos</h3>
+      <p>Nuestro sistema consulta en tiempo real si cada número tiene WhatsApp activo. Sin demoras, sin colas largas.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Recibís el resultado</h3>
+      <p>Te devolvemos la lista limpia: qué números tienen WhatsApp y cuáles no. Integralo directo a tu CRM.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing" id="planes">
+  <div class="section-label">Planes</div>
+  <h2>Precios claros,<br>sin sorpresas.</h2>
+  <p class="pricing-sub">Pagás por lo que usás. Sin contrato de permanencia.</p>
+  <div class="plans">
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">$15.000</div>
+      <div class="plan-period">ARS / mes</div>
+      <ul class="plan-features">
+        <li>5.000 validaciones mensuales</li>
+        <li>Acceso a API REST</li>
+        <li>Soporte por mail</li>
+        <li>Resultados en tiempo real</li>
+      </ul>
+      <a href="#contacto" class="plan-btn">Empezar</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">$40.000</div>
+      <div class="plan-period">ARS / mes</div>
+      <ul class="plan-features">
+        <li>20.000 validaciones mensuales</li>
+        <li>Acceso a API REST</li>
+        <li>Soporte prioritario</li>
+        <li>Integración con CRM</li>
+      </ul>
+      <a href="#contacto" class="plan-btn">Empezar</a>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price">A conv.</div>
+      <div class="plan-period">volumen ilimitado</div>
+      <ul class="plan-features">
+        <li>Validaciones ilimitadas</li>
+        <li>SLA garantizado</li>
+        <li>Soporte dedicado</li>
+        <li>Onboarding personalizado</li>
+      </ul>
+      <a href="#contacto" class="plan-btn">Consultar</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section class="section contact" id="contacto">
+  <div class="section-label">Contacto</div>
+  <div class="contact-grid">
+    <div>
+      <h2>¿Hablamos?</h2>
+      <p class="contact-desc">Contanos el tamaño de tu operación y te armamos una propuesta a medida. Sin compromiso.</p>
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <span>✉</span>
+          <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea6a1a2af8eada1a0baafadbabaabada6e0ada1a3e0afbc">[email&#160;protected]</a></span>
+        </div>
+        <div class="contact-info-item">
+          <span>📍</span>
+          <span>Buenos Aires, Argentina</span>
+        </div>
+        <div class="contact-info-item">
+          <span>⚡</span>
+          <span>Respondemos en menos de 24hs hábiles</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" placeholder="Juan García" required>
+          </div>
+          <div class="form-group">
+            <label for="empresa">Empresa</label>
+            <input type="text" id="empresa" placeholder="CallCenter S.A." required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="juan@empresa.com" required>
+        </div>
+        <div class="form-group">
+          <label for="volumen">Volumen estimado mensual</label>
+          <select id="volumen">
+            <option value="">Seleccioná una opción</option>
+            <option value="5k">Hasta 5.000 validaciones</option>
+            <option value="20k">5.000 – 20.000 validaciones</option>
+            <option value="50k">20.000 – 50.000 validaciones</option>
+            <option value="100k+">Más de 50.000 validaciones</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mensaje">Mensaje (opcional)</label>
+          <textarea id="mensaje" placeholder="Contanos sobre tu operación..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Enviar consulta →</button>
+        <div class="success-msg" id="successMsg">
+          ✓ Mensaje recibido. Te contactamos en las próximas 24 horas.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- TECH DOCS -->
+<section class="section tech-trigger-section" style="border-top: 1px solid var(--gray-mid); padding: 60px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;">
+    <div>
+      <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:24px; margin-bottom:8px;">¿Sos técnico o querés integrar?</div>
+      <p style="color:var(--gray-light); font-size:15px;">Integrá via API REST o simplemente mandanos un Excel. Nosotros nos encargamos del resto.</p>
+    </div>
+    <button class="btn-primary" onclick="toggleDocs()" id="docsBtn">Ver documentación técnica →</button>
+  </div>
+</section>
+
+<section class="section tech" id="api" style="display:none; border-top: 1px solid var(--gray-mid);">
+  <div class="section-label">Integración</div>
+  <div class="tech-header">
+    <h2>API simple.<br>Integrás en <em>minutos</em>.</h2>
+    <p class="tech-sub">Un endpoint REST. Sin SDKs raros, sin configuraciones complejas. Si sabés hacer un POST, ya sabés usar nuestra API.</p>
+  </div>
+
+  <div class="tech-grid">
+    <!-- Auth -->
+    <div class="tech-block">
+      <div class="tech-block-label">01 — Autenticación</div>
+      <p class="tech-block-desc">Cada cliente recibe una API key única. La mandás en el header de cada request.</p>
+      <div class="code-box">
+        <div class="code-header">
+          <span class="code-lang">HTTP Header</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <pre><code>Authorization: Bearer TU_API_KEY</code></pre>
+      </div>
+    </div>
+
+    <!-- Request -->
+    <div class="tech-block">
+      <div class="tech-block-label">02 — Request</div>
+      <p class="tech-block-desc">Enviás un array de números. Acepta formato internacional o argentino local.</p>
+      <div class="code-box">
+        <div class="code-header">
+          <span class="code-lang">curl</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <pre><code>curl -X POST https://api.contacttech.com.ar/v1/validate \
+  -H "Authorization: Bearer TU_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "numbers": [
+      "+5491112345678",
+      "+5491187654321",
+      "1156781234"
+    ]
+  }'</code></pre>
+      </div>
+    </div>
+
+    <!-- Response -->
+    <div class="tech-block">
+      <div class="tech-block-label">03 — Response</div>
+      <p class="tech-block-desc">Recibís el resultado por cada número: si tiene WhatsApp activo o no.</p>
+      <div class="code-box">
+        <div class="code-header">
+          <span class="code-lang">JSON Response</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <pre><code>{
+  "results": [
+    {
+      "number": "+5491112345678",
+      "has_whatsapp": true
+    },
+    {
+      "number": "+5491187654321",
+      "has_whatsapp": false
+    },
+    {
+      "number": "1156781234",
+      "has_whatsapp": true
+    }
+  ],
+  "total": 3,
+  "valid": 2,
+  "invalid": 1
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- JS Example -->
+    <div class="tech-block">
+      <div class="tech-block-label">Ejemplo en JavaScript</div>
+      <p class="tech-block-desc">Integrá directamente desde tu sistema en pocas líneas.</p>
+      <div class="code-box">
+        <div class="code-header">
+          <span class="code-lang">JavaScript</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <pre><code>const response = await fetch(
+  'https://api.contacttech.com.ar/v1/validate',
+  {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer TU_API_KEY',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      numbers: ['+5491112345678', '+5491187654321']
+    })
+  }
+);
+
+const data = await response.json();
+const activos = data.results.filter(r => r.has_whatsapp);
+console.log(`${activos.length} números con WhatsApp`);</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Excel option -->
+  <div class="tech-block" style="grid-column: 1 / -1;">
+    <div class="tech-block-label">¿Sin equipo técnico? Sin problema.</div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:32px; margin-top:8px;">
+      <div>
+        <p class="tech-block-desc" style="margin-bottom:16px;">Si no querés integrar la API, nos mandás un Excel con la columna de teléfonos y te devolvemos el mismo archivo con una columna extra indicando si tiene WhatsApp o no. Simple como mandar un mail.</p>
+        <div class="code-box" style="max-width:400px;">
+          <div class="code-header"><span class="code-lang">Formato Excel esperado</span></div>
+          <pre><code>| telefono       | nombre   | ...  |
+| -------------- | -------- | ---- |
+| +5491112345678 | Juan G.  | ...  |
+| 1156781234     | María L. | ...  |</code></pre>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px; justify-content:center;">
+        <div class="problem-card" style="border-color: rgba(0,230,118,0.3);">
+          <div class="problem-icon">📤</div>
+          <div>
+            <h3>Vos mandás</h3>
+            <p>Excel o CSV con tus números. Lo enviás por mail o por WhatsApp.</p>
+          </div>
+        </div>
+        <div class="problem-card" style="border-color: rgba(0,230,118,0.3);">
+          <div class="problem-icon">📥</div>
+          <div>
+            <h3>Nosotros devolvemos</h3>
+            <p>El mismo archivo con la columna <strong style="color:var(--green)">tiene_whatsapp</strong> completada.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formatos aceptados -->
+  <div class="formats-box">
+    <div class="formats-label">Formatos de número aceptados</div>
+    <div class="formats-grid">
+      <div class="format-item"><span class="format-check">✓</span> +5491112345678 <span class="format-note">Internacional completo</span></div>
+      <div class="format-item"><span class="format-check">✓</span> 5491112345678 <span class="format-note">Sin el +</span></div>
+      <div class="format-item"><span class="format-check">✓</span> 1112345678 <span class="format-note">Local 10 dígitos</span></div>
+      <div class="format-item"><span class="format-check">✓</span> 01112345678 <span class="format-note">Con 0 adelante</span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tech {
+    background: var(--gray);
+    border-top: 1px solid var(--gray-mid);
+  }
+
+  .tech-header {
+    margin-bottom: 72px;
+  }
+
+  .tech h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .tech h2 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .tech-sub {
+    color: var(--gray-light);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .tech-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tech-block-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .tech-block-desc {
+    font-size: 14px;
+    color: var(--gray-light);
+    line-height: 1.6;
+  }
+
+  .code-box {
+    background: #0d0d0d;
+    border: 1px solid var(--gray-mid);
+    flex: 1;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--gray-mid);
+  }
+
+  .code-lang {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray-light);
+  }
+
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--gray-mid);
+    color: var(--gray-light);
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .copy-btn:hover { border-color: var(--green); color: var(--green); }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    margin: 0;
+  }
+
+  code {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #cdd6f4;
+    white-space: pre;
+  }
+
+  .formats-box {
+    border: 1px solid var(--gray-mid);
+    background: var(--black);
+    padding: 36px 40px;
+  }
+
+  .formats-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 24px;
+  }
+
+  .formats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .format-item {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .format-check {
+    color: var(--green);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  .format-note {
+    font-size: 12px;
+    color: var(--gray-light);
+    display: block;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .tech-grid { grid-template-columns: 1fr; }
+    .formats-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Contact<span>Tech</span></div>
+  <p>© 2025 ContactTech. Buenos Aires, Argentina.</p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Toggle docs
+  window.toggleDocs = function() {
+    var section = document.getElementById('api');
+    var btn = document.getElementById('docsBtn');
+    if (section.style.display === 'none' || section.style.display === '') {
+      section.style.display = 'block';
+      btn.textContent = 'Ocultar documentación ↑';
+      setTimeout(function() {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    } else {
+      section.style.display = 'none';
+      btn.textContent = 'Ver documentación técnica →';
+    }
+  }
+
+  // Copy code
+  function copyCode(btn) {
+    const code = btn.closest('.code-box').querySelector('code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = '✓ Copiado';
+      setTimeout(() => btn.textContent = 'Copiar', 2000);
+    });
+  }
+
+  // Form submit
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.submit-btn');
+    const msg = document.getElementById('successMsg');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.style.display = 'none';
+      msg.style.display = 'block';
+      this.reset();
+    }, 1000);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.style.opacity = '1';
+        el.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.problem-ca
