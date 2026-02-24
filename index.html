@@ -836,7 +836,18 @@
       <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:24px; margin-bottom:8px;">¿Sos técnico o querés integrar?</div>
       <p style="color:var(--gray-light); font-size:15px;">Integrá via API REST o simplemente mandanos un Excel. Nosotros nos encargamos del resto.</p>
     </div>
-    <button class="btn-primary" onclick="toggleDocs()" id="docsBtn">Ver documentación técnica →</button>
+    <button class="btn-primary" id="docsBtn" onclick="
+      var s = document.getElementById('api');
+      var b = document.getElementById('docsBtn');
+      if(s.style.display === 'none' || s.style.display === ''){
+        s.style.display = 'block';
+        b.textContent = 'Ocultar documentación ↑';
+        s.scrollIntoView({behavior:'smooth'});
+      } else {
+        s.style.display = 'none';
+        b.textContent = 'Ver documentación técnica →';
+      }
+    ">Ver documentación técnica →</button>
   </div>
 </section>
 
